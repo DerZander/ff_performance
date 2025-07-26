@@ -1,4 +1,7 @@
+import os
+
 import streamlit as st
+from dotenv import load_dotenv
 
 from pages.admin import page_question_list, page_question_form
 from pages.home import page_home
@@ -19,9 +22,12 @@ admin_pages = [
 
 pages = {
     "Home": home_pages,
-    "Aufgaben": task_pages,
-    "Admin": admin_pages
+    "Aufgaben": task_pages
 }
+
+load_dotenv()
+if os.getenv("ENVIRONMENT") != "production":
+    pages["Admin"] = admin_pages
 
 if __name__ == "__main__":
     pg = st.navigation(pages)
