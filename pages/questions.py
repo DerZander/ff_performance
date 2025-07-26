@@ -2,10 +2,20 @@ import streamlit as st
 
 from services.question_service import get_all_questions
 
+title = "Fragenkatalog"
 
-def questions_index():
+
+def index():
     st.title("Fragenkatalog")
-    st.write("Diese Seite dient zum üben der Fragen.")
+    st.markdown(
+        """
+        Der Fragenkatalog für den Leistungsnachweis 2025 (Stand: 18.03.2025) ist veröffentlicht
+        auf der Homepage des VdF NRW e.V.
+        Link: https://www.feuerwehrverband.nrw/aktuelles/veranstaltungen/leistungsnachweis \n
+        Der vorliegende Fragenkatalog des VdF NRW Fachausschusses Ausbildung und Einsatz
+        umfasst nunmehr **30 Fragen** und ist **ein Jahr gültig**. Somit sind **alle** Fragen zu bearbeiten.
+        """
+    )
     questions_show_all()
 
 
@@ -31,4 +41,4 @@ def question_survey(question=None):
                 st.warning(f"Leider falsch. Die richtige Antwort ist: {question['rightAnswer']}")
 
 
-page_questions = st.Page(questions_index, title="Fragenkatalog", icon="❓")
+page_questions = st.Page(index, title=title, icon="❓")
