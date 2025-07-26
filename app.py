@@ -8,6 +8,7 @@ from pages.firefighting import page_firefighting
 from pages.first_aid import page_first_aid
 from pages.home import page_home
 from pages.knots_and_stitches import page_knots_and_stitches
+from pages.question_exam import page_question_exam
 from pages.questions import page_questions
 from pages.relay_race import page_relay_race
 from pages.technical_assistance import page_technical_assistance
@@ -30,9 +31,14 @@ admin_pages = [
     page_question_form
 ]
 
+exam_pages = [
+    page_question_exam
+]
+
 pages = {
     "Home": home_pages,
-    "Aufgaben": training_pages
+    "Aufgaben": training_pages,
+    "Wissensabfrage": exam_pages,
 }
 
 load_dotenv()

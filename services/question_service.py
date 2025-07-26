@@ -131,6 +131,71 @@ def save_question(question, year):
         conn.close()
 
 
+def get_years():
+    conn = get_db_connection()
+    if not conn:
+        raise Exception("Keine Verbindung zur Datenbank möglich.")
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT DISTINCT year FROM questions ORDER BY year DESC")
+        years = [row[0] for row in cur.fetchall()]
+        return years
+    except mariadb.Error as e:
+        print(f"Fehler beim Laden der Jahre: {e}")
+        raise
+    finally:
+        conn.close()
+
+
+def get_latest_year():
+    years = get_years()
+    if years:
+        return years[0]
+    return None
+
+
+def save_difficult_questions(difficult_questions):
+    conn = get_db_connection()
+    if not conn:
+        raise Exception("Keine Verbindung zur Datenbank möglich.")
+    try:
+        cur = conn.cursor()
+        for entry in difficult_questions:
+            cur.execute(
+                """
+                INSERT INTO difficult_questions (question_id, given_answer_id, right_answer_id, timestamp, test_run_id)
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (
+                    entry["question_id"],
+                    entry["given_answer_id"],
+                    entry["right_answer_id"],
+                    entry["timestamp"],
+                    entry["test_run_id"]
+                )
+            )
+        conn.commit()
+    except mariadb.Error as e:
+        print(f"Fehler beim Speichern schwieriger Fragen: {e}")
+        raise
+    finally:
+        conn.close()
+
+
+def get_answer_id(question_id, answer_text):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT id FROM answers WHERE question_id = ? AND answer_text = ?",
+            (question_id, answer_text)
+        )
+        row = cur.fetchone()
+        return row[0] if row else None
+    finally:
+        conn.close()
+
+
 if __name__ == "__main__":
     for question in get_all_questions():
         print(f"{question['title']}")
