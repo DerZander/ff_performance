@@ -27,13 +27,15 @@ def question_exam():
     test_run_id = st.session_state["test_run_id"]
     if not submitted:
         user_answers = []
-        for idx, q in enumerate(questions):
-            user_answer = st.radio(
-                f"{idx + 1}. {q['title']}",
-                q["answers"],
-                key=f"exam_answer_{idx}"
-            )
-            user_answers.append(user_answer)
+        tabs = st.tabs([f"Frage {idx + 1}" for idx in range(len(questions))])
+        for idx, (q, tab) in enumerate(zip(questions, tabs)):
+            with tab:
+                user_answer = st.radio(
+                    f"{q['title']}",
+                    q["answers"],
+                    key=f"exam_answer_{idx}"
+                )
+                user_answers.append(user_answer)
         if st.button("Prüfung abgeben"):
             st.session_state["exam_submitted"] = True
             st.session_state["exam_user_answers"] = user_answers
