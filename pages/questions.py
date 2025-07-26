@@ -41,4 +41,9 @@ def question_survey(question=None):
                 st.warning(f"Leider falsch. Die richtige Antwort ist: {question['rightAnswer']}")
 
 
-page_questions = st.Page(index, title=title, icon="❓")
+page_questions = st.Page(
+    index,
+    title=title,
+    icon="❓",
+    url_path="/questions",
+)
